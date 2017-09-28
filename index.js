@@ -10,7 +10,10 @@ const server = http.createServer((req, res) => {
   // res.write(req.headers['user-agent']);
   switch (req.method) {
     case 'GET':
-      res.write('GET ' + req.url + '\n');
+      // res.write('GET ' + req.url + '\n');
+      const fs = require('fs');
+      const rs = fs.createReadStream('./form.html');
+      rs.pipe(res);
       break;
     case 'POST':
       res.write('POST ' + req.url + '\n');
@@ -19,8 +22,13 @@ const server = http.createServer((req, res) => {
         body.push(chunk);
       }).on('end', () => {
         body = Buffer.concat(body).toString();
-        console.info('[' + now + '] Data posted:' + body);
+        // console.info('[' + now + '] Data posted:' + body);
+        const decoded = decodeURIComponent(body);
+        console.info('[' + now + '] 投稿: ' + decoded );
+        res.write('<!DOCTYPE html><html lang="ja"><body><h1>' + decoded + 'が投稿されました</h1></body></html>');
+        res.end();
       });
+      // res.end();
       break;
     case 'DELETE':
       res.write('DELETE' + req.url);
@@ -28,7 +36,7 @@ const server = http.createServer((req, res) => {
     default:
       break;
   }
-  res.end();
+  // res.end();
 }).on('error', (e) => {
     console.error('[' + new Date() + '] Server Error', e);
 }).on('clientError', (e) => {
