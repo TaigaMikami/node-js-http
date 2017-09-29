@@ -1,7 +1,7 @@
 {
   "name": "Enquetes",
   "description": "Enquetes for favorite foods.",
-  "repository": "https://github.com/TaigaMikami/node-js-http.git",
+  "repository": "https://github.com/TaigaMikami/node-js-http",
   "logo": "",
   "keywords": ["node"],
   "image": "heroku/nodejs"
