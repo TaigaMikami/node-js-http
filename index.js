@@ -1,5 +1,6 @@
 'use strict';
 const http = require('http');
+const jade = require('jade');
 const server = http.createServer((req, res) => {
   // console.info('[' + new Date() + '] Requested by ' + req.connection.remoteAddress);
   const now = new Date();
@@ -11,9 +12,29 @@ const server = http.createServer((req, res) => {
   switch (req.method) {
     case 'GET':
       // res.write('GET ' + req.url + '\n');
-      const fs = require('fs');
-      const rs = fs.createReadStream('./form.html');
-      rs.pipe(res);
+      // const fs = require('fs');
+      // const rs = fs.createReadStream('./form.html');
+      // rs.pipe(res);
+      if (req.url === '/enquetes/yaki-shabu') {
+        res.write(jade.renderFile('./form.jade',{
+          path: req.url,
+          firstItem: '焼肉',
+          secondItem: 'しゃぶしゃぶ'
+        }));
+      } else if (req.url === '/enquetes/rice-bread') {
+        res.write(jade.renderFile('./form.jade', {
+          path: req.url,
+          firstItem: 'ごはん',
+          secondItem: 'パン'
+        }));
+      } else if (req.url === '/enquetes/sushi-pizza') {
+        res.write(jade.renderFile('./form.jade',{
+          path: req.url,
+          firstItem: '寿司',
+          secondItem: 'ピザ'
+        }));
+      }
+      res.end();
       break;
     case 'POST':
       res.write('POST ' + req.url + '\n');
@@ -25,7 +46,7 @@ const server = http.createServer((req, res) => {
         // console.info('[' + now + '] Data posted:' + body);
         const decoded = decodeURIComponent(body);
         console.info('[' + now + '] 投稿: ' + decoded );
-        res.write('<!DOCTYPE html><html lang="ja"><body><h1>' + decoded + 'が投稿されました</h1></body></html>');
+        res.write('' + decoded + 'が投稿されました');
         res.end();
       });
       // res.end();
